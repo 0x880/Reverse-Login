@@ -5,29 +5,6 @@ class Hash_Data:
         self.user = "920427"
         self.password = "Ryin.2018"
 
-    def Data_Login(self):
-   
-        data = {
-            "partnerId": self.user,
-            "pwd": hashlib.md5(self.password.encode()).hexdigest()
-        }
-        
-        result = self.To_Hex(self.To_Query(data))
-        return result
-
-    def To_Hex(self, otext):
-
-        Byte = self.WUTF(otext)
-        
-        hex_str = "0123456789ABCDEF"
-        hex = ""
-        
-        for i in range(len(Byte)):
-            hex += hex_str[(Byte[i] & 0xf0) >> 4]
-            hex += hex_str[(Byte[i] & 0x0f) >> 0]
-        
-        return hex
-
     def WUTF(self, text):
 
         bk = []
@@ -66,6 +43,19 @@ class Hash_Data:
         else:
             return [Byte >> 8, Byte & 0xff] + bk
 
+    def To_Hex(self, otext):
+
+        Byte = self.WUTF(otext)
+        
+        hex_str = "0123456789ABCDEF"
+        hex = ""
+        
+        for i in range(len(Byte)):
+            hex += hex_str[(Byte[i] & 0xf0) >> 4]
+            hex += hex_str[(Byte[i] & 0x0f) >> 0]
+        
+        return hex
+
     def To_Query(self, params):
 
         str = ''
@@ -74,3 +64,13 @@ class Hash_Data:
             str += i + '=' + params[i] + '&'
         
         return str[:-1]
+        
+    def Data_Login(self):
+   
+        data = {
+            "partnerId": self.user,
+            "pwd": hashlib.md5(self.password.encode()).hexdigest()
+        }
+        
+        result = self.To_Hex(self.To_Query(data))
+        return result        
